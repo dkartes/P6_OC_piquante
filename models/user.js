@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+const { isEmail } = require("validator");
 
 //creation du modele d'utilisateur
 const userSchema = mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  email: {
+    type: String,
+    required: true,
+    validate: [isEmail],
+  },
+  password: {
+    type: String,
+    required: true,
+    minLength: 6,
+  },
 });
-
-//on applique l'addon de mongoose pour avoir des adresses mails uniques
-userSchema.plugin(uniqueValidator);
 
 //on export le model
 module.exports = mongoose.model("user", userSchema);
